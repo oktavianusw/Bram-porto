@@ -56,17 +56,27 @@ Create a repo and push this folder to it (default branch `main`).
 - [app.netlify.com](https://app.netlify.com) → **Add new site → Import from GitHub** →
   pick the repo. No build command, publish directory = `/` (root). Deploy.
 
-### 3. Turn on the login (Netlify Identity + Git Gateway)
-In the Netlify site dashboard:
-- **Integrations / Identity → Enable Identity**
-- Identity → **Registration: Invite only** (so only your friend can log in)
-- Identity → **Services → Git Gateway → Enable**
-- Identity → **Invite users** → enter your friend's email
+### 3. Turn on the login (GitHub OAuth)
+Netlify Identity is retired for new projects, so the CMS authenticates with
+**GitHub OAuth**. The single editor logs in with their GitHub account (which must
+have write access to the repo). The OAuth handshake runs in two serverless
+functions ([`netlify/functions/auth.js`](netlify/functions/auth.js) +
+[`callback.js`](netlify/functions/callback.js)); the client secret only ever lives
+in Netlify env vars.
 
-Your friend clicks the email link, sets a password, and can now edit at `/admin/`.
+1. **GitHub → Settings → Developer settings → OAuth Apps → New OAuth App**
+   - Homepage URL: `https://<your-site>.netlify.app`
+   - Authorization callback URL: `https://<your-site>.netlify.app/.netlify/functions/callback`
+   - Register → copy the **Client ID** → **Generate a new client secret** → copy it.
+2. **Netlify → Project configuration → Environment variables**, add:
+   - `OAUTH_GITHUB_CLIENT_ID` = the Client ID
+   - `OAUTH_GITHUB_CLIENT_SECRET` = the secret (tick *Contains secret values*; keep the
+     *Functions* scope on)
+3. Make sure `repo`, `base_url`, and `branch` in
+   [`admin/config.yml`](admin/config.yml) match your repo / site, then redeploy.
 
-> If your repo's default branch is `master`, change `branch: main` → `master` in
-> [`admin/config.yml`](admin/config.yml).
+Now `/admin/` shows **Login with GitHub**. The first login asks you to authorize the
+OAuth app once. To let someone else edit, add them as a repo **collaborator** on GitHub.
 
 ---
 
@@ -86,7 +96,8 @@ python3 -m http.server 4321   # terminal 2
 # Layout Editor: http://localhost:4321/admin/arrange/  (or click "Arrange layout" in the sidebar; no login locally)
 ```
 Locally the Layout Editor saves straight to `layout.json` via decap-server.
-On the deployed site it commits via Netlify Git Gateway (hence the login).
+On the deployed site it commits `layout.json` via the GitHub API, reusing the token
+from your CMS login (so sign in at `/admin/` first).
 
 ---
 
