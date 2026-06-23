@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="robots" content="noindex" />
+  <base href="/" />
+  <title>Layout Editor — Bram</title>
+  <link rel="stylesheet" href="styles.css?v=3" />
+  <style>
+    /* Push everything below the editor toolbar */
+    :root { --editbar-h: 52px; }
+    .desktop { padding-top: calc(var(--menubar-h) + var(--editbar-h)); }
+    .editbar {
+      position: fixed; left: 0; right: 0; top: var(--menubar-h); height: var(--editbar-h);
+      z-index: 5001; display: flex; align-items: center; gap: 10px; padding: 0 14px;
+      background: rgba(20,20,24,0.78); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+      color: #f4f4f6; font-family: var(--font-sys); font-size: 13px;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset;
+    }
+    .editbar .title { font-weight: 700; margin-right: 6px; }
+    .editbar .title small { font-weight: 400; opacity: 0.7; }
+    .editbar .spacer { flex: 1; }
+    .editbar button {
+      font: inherit; color: #f4f4f6; background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; padding: 7px 14px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .editbar button:hover { background: rgba(255,255,255,0.22); }
+    .editbar button.primary { background: var(--accent); border-color: transparent; font-weight: 600; }
+    .editbar button.primary:hover { background: #1f6fe0; }
+    .editbar .status { font-size: 12.5px; opacity: 0.9; min-width: 80px; }
+    .editbar .status.ok { color: #4ade80; }
+    .editbar .status.err { color: #ff7a7a; }
+    .editbar a.back { color: #f4f4f6; opacity: 0.85; text-decoration: none; font-size: 12.5px; }
+    .editbar a.back:hover { opacity: 1; }
+
+    /* Login gate (production only) */
+    .gate {
+      position: fixed; inset: 0; z-index: 9000; display: none;
+      align-items: center; justify-content: center; flex-direction: column; gap: 18px;
+      background: rgba(10,10,14,0.82); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+      color: #f4f4f6; font-family: var(--font-sys); text-align: center; padding: 24px;
+    }
+    .gate.show { display: flex; }
+    .gate h2 { margin: 0; font-size: 20px; }
+    .gate p { margin: 0; opacity: 0.8; max-width: 380px; }
+    .gate button { font: inherit; background: var(--accent); color: #fff; border: 0; border-radius: 10px; padding: 12px 22px; font-weight: 600; cursor: pointer; }
+
+    @media (max-width: 760px) {
+      .editbar { flex-wrap: wrap; height: auto; padding: 8px 12px; }
+      .desktop { padding-top: calc(var(--menubar-h) + 96px); }
+    }
+  </style>
+  <script>window.ARRANGE_MODE = true;</script>
+</head>
+<body>
+  <div id="boot" class="boot"><div class="boot-logo"></div><div class="boot-bar"><div class="boot-bar-fill"></div></div></div>
+
+  <!-- Menu bar (same as site) -->
+  <header id="menubar" class="menubar">
+    <div class="menubar-left">
+      <span class="menu-apple"></span>
+      <span class="menu-app" id="menu-app-name">Layout Editor</span>
+    </div>
+    <div class="menubar-right">
+      <a class="menu-icon" id="link-instagram" href="#" target="_blank" rel="noopener" aria-label="Instagram" style="visibility:hidden"></a>
+      <a class="menu-icon" id="link-email" href="#" style="display:none"></a>
+      <span class="menu-clock" id="clock">--:--:--</span>
+    </div>
+  </header>
+
+  <!-- Editor toolbar -->
+  <div class="editbar">
+    <span class="title">Layout Editor <small>— drag the icons, then Save</small></span>
+    <span class="spacer"></span>
+    <span class="status" id="ed-status"></span>
+    <button id="ed-shuffle" title="Randomize positions">Shuffle</button>
+    <button id="ed-reset" title="Revert to last saved">Reset</button>
+    <button id="ed-save" class="primary">💾 Save layout</button>
+    <a class="back" href="/admin/">← CMS</a>
+    <a class="back" href="/" target="_blank" rel="noopener">View site ↗</a>
+  </div>
+
+  <main id="desktop" class="desktop" aria-label="Desktop">
+    <div id="icons" class="icons"></div>
+    <div id="windows" class="windows"></div>
+  </main>
+
+  <div id="hint" class="hint hidden"></div>
+
+  <!-- Login gate (only used on the deployed site) -->
+  <div class="gate" id="gate">
+    <h2>Layout Editor</h2>
+    <p>Please log in with your editor account to arrange and save the desktop layout.</p>
+    <button id="gate-login">Log in</button>
+  </div>
+
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script src="script.js?v=3"></script>
+  <script>
+  /* ============================================================
+     Layout Editor controller
+     ============================================================ */
+  (function () {
+    const isLocal = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+    const BRANCH = 'main';                 // must match admin/config.yml
+    const statusEl = document.getElementById('ed-status');
+
+    function setStatus(msg, kind) {
+      statusEl.textContent = msg || '';
+      statusEl.className = 'status' + (kind ? ' ' + kind : '');
+    }
+
+    /* ---- read current on-screen positions as percentages ---- */
+    function collectLayout() {
+      const layer = document.getElementById('icons');
+      const W = layer.clientWidth, H = layer.clientHeight, out = {};
+      layer.querySelectorAll('.icon').forEach(el => {
+        out[el.dataset.id] = {
+          x: +((el.offsetLeft / W) * 100).toFixed(2),
+          y: +((el.offsetTop / H) * 100).toFixed(2),
+        };
+      });
+      return out;
+    }
+
+    /* ---- re-render the icons (used by Shuffle / Reset) ---- */
+    function rerender() {
+      const layer = document.getElementById('icons');
+      layer.innerHTML = '';
+      renderIcons();   // global from script.js — reads DATA.layout
+    }
+
+    /* ---- unicode-safe base64 for git-gateway ---- */
+    function b64(str) { return btoa(unescape(encodeURIComponent(str))); }
+
+    /* ---- write layout.json via the right backend ---- */
+    async function saveLayout() {
+      const layout = collectLayout();
+      const raw = JSON.stringify(layout, null, 2) + '\n';
+      setStatus('Saving…');
+      try {
+        if (isLocal) {
+          const res = await fetch('http://localhost:8081/api/v1', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'persistEntry',
+              params: {
+                branch: BRANCH,
+                entry: { slug: 'layout', path: 'layout.json', raw },
+                assets: [],
+                options: { commitMessage: 'Update desktop layout', useWorkflow: false, status: 'draft', newEntry: false, collectionName: 'site' },
+              },
+            }),
+          });
+          if (!res.ok) throw new Error('local server ' + res.status + ' — is `npx decap-server` running?');
+        } else {
+          const user = window.netlifyIdentity && netlifyIdentity.currentUser();
+          if (!user) { showGate(); throw new Error('Please log in first.'); }
+          const token = await user.jwt();
+          const api = '/.netlify/git/github/contents/layout.json';
+          let sha;
+          const cur = await fetch(api + '?ref=' + BRANCH, { headers: { Authorization: 'Bearer ' + token } });
+          if (cur.ok) sha = (await cur.json()).sha;
+          const put = await fetch(api, {
+            method: 'PUT',
+            headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: 'Update desktop layout', content: b64(raw), branch: BRANCH, sha }),
+          });
+          if (!put.ok) throw new Error('git-gateway ' + put.status + ' ' + (await put.text()).slice(0, 120));
+        }
+        DATA.layout = layout;   // keep in memory so Reset = this
+        setStatus('Saved ✓ visitors now see this', 'ok');
+      } catch (e) {
+        setStatus(e.message || 'Save failed', 'err');
+        console.error(e);
+      }
+    }
+
+    /* ---- buttons ---- */
+    document.getElementById('ed-save').addEventListener('click', saveLayout);
+    document.getElementById('ed-shuffle').addEventListener('click', () => {
+      DATA.layout = {};        // ignore saved -> random scatter
+      rerender();
+      setStatus('Shuffled — drag to taste, then Save');
+    });
+    document.getElementById('ed-reset').addEventListener('click', async () => {
+      try {
+        const r = await fetch('layout.json', { cache: 'no-store' });
+        DATA.layout = r.ok ? await r.json() : {};
+      } catch (e) { DATA.layout = {}; }
+      rerender();
+      setStatus('Reverted to last saved');
+    });
+
+    /* ---- login gate (deployed site only) ---- */
+    function showGate() { document.getElementById('gate').classList.add('show'); }
+    function hideGate() { document.getElementById('gate').classList.remove('show'); }
+    document.getElementById('gate-login').addEventListener('click', () => window.netlifyIdentity && netlifyIdentity.open());
+
+    if (!isLocal && window.netlifyIdentity) {
+      netlifyIdentity.on('init', user => { if (!user) showGate(); });
+      netlifyIdentity.on('login', () => { hideGate(); netlifyIdentity.close(); });
+      netlifyIdentity.on('logout', showGate);
+      netlifyIdentity.init();
+    }
+
+    setStatus(isLocal ? 'Local mode — saves to layout.json' : '');
+  })();
+  </script>
+</body>
+</html>

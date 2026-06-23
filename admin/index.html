@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Bram — Content Manager</title>
+</head>
+<body>
+  <!-- Netlify Identity (login) -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <!-- Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js"></script>
+  <script>
+    // This Decap build has no registerAdditionalLink API, so we add an
+    // "Arrange layout" link into the sidebar and keep it there across re-renders.
+    (function () {
+      function inject() {
+        if (document.getElementById('arrange-nav-link')) return;
+        var collLink = document.querySelector('a[href^="#/collections"]');
+        if (!collLink) return;
+        var list = collLink.closest('ul');
+        var item = collLink.closest('li');
+        var a = document.createElement('a');
+        a.id = 'arrange-nav-link';
+        a.href = '/admin/arrange/';
+        a.textContent = '🗂  Arrange layout';
+        a.className = collLink.className;
+        // The CMS router swallows plain anchor clicks — force a real navigation.
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.location.href = '/admin/arrange/';
+        });
+        if (item && list) {
+          var li = document.createElement('li');
+          li.className = item.className;
+          li.appendChild(a);
+          list.appendChild(li);
+        } else {
+          (list || collLink.parentElement).appendChild(a);
+        }
+      }
+      new MutationObserver(inject).observe(document.body, { childList: true, subtree: true });
+      inject();
+    })();
+  </script>
+</body>
+</html>

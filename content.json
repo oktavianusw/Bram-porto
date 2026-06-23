@@ -1,0 +1,193 @@
+{
+  "profile": {
+    "name": "Bram",
+    "instagram": "https://instagram.com/your_handle",
+    "email": "bram@example.com",
+    "profilePic": ""
+  },
+  "readme": {
+    "title": "Read Me",
+    "paragraphs": [
+      {
+        "style": "lead",
+        "text": "Hi — this is Bram. Thanks for poking around tetsagdasdjasd"
+      },
+      {
+        "style": "normal",
+        "text": "Normally I'd open with “multi-disciplinary maker, builds web things, shoots photos, designs the odd brand.” True, but a little dull."
+      },
+      {
+        "style": "normal",
+        "text": "So instead, the honest version: I work across code, design and image because I get bored doing only one. Some of it ships, some of it lives forever in an “untitled” folder."
+      },
+      {
+        "style": "small",
+        "text": "I taught myself to code before I learned to finish things."
+      },
+      {
+        "style": "small",
+        "text": "Double-click the folders. The CV is the boring summary; the projects are the real me."
+      }
+    ]
+  },
+  "photos": [
+    {
+      "image": "/assets/uploads/indomie-goreng.jpg"
+    },
+    {
+      "image": "/assets/uploads/screenshot-2026-05-21-at-18.35.54.png"
+    },
+    {
+      "image": ""
+    },
+    {
+      "image": ""
+    },
+    {
+      "image": ""
+    },
+    {
+      "image": ""
+    }
+  ],
+  "cv": {
+    "fileLabel": "CV_Bram_2026",
+    "name": "Bram",
+    "role": "Developer · Designer · Image-maker",
+    "sections": [
+      {
+        "title": "Work",
+        "rows": [
+          {
+            "when": "2024 — now",
+            "what": "Freelance",
+            "sub": "Web apps, brand systems, creative tech for studios & founders."
+          },
+          {
+            "when": "2022 — 2024",
+            "what": "Frontend Developer, Studio X",
+            "sub": "Shipped product UI, design systems, interactive sites."
+          }
+        ]
+      },
+      {
+        "title": "Education",
+        "rows": [
+          {
+            "when": "2018 — 2022",
+            "what": "B.Sc. Informatics",
+            "sub": "Plus a lot of self-taught design on the side."
+          }
+        ]
+      },
+      {
+        "title": "Toolbox",
+        "tags": [
+          "JavaScript",
+          "TypeScript",
+          "React",
+          "Node",
+          "Figma",
+          "Photoshop",
+          "Premiere",
+          "WebGL",
+          "Python"
+        ]
+      }
+    ]
+  },
+  "projects": [
+    {
+      "bg": "",
+      "bgVideo": "/assets/uploads/sample.mp4",
+      "meta": "2024 · Web Experience · Lead Developer",
+      "blocks": [
+        {
+          "title": "Stack",
+          "text": "React, Three.js, GLSL shaders\nGSAP scroll choreography"
+        },
+        {
+          "title": "Recognition",
+          "text": "Awwwards — Honorable Mention, 2024\nCSS Design Awards — Site of the Day"
+        }
+      ],
+      "overlay": "rgba(35,80,120,0.55)",
+      "titleAlt": "渡水而来",
+      "synopsis": "An interactive web piece tracing a migration story through scroll-driven WebGL. Built solo, end to end.",
+      "label": "Across the Waters",
+      "title": "Across the Waters",
+      "links": [
+        {
+          "label": "Live →",
+          "url": "#"
+        },
+        {
+          "label": "Code →",
+          "url": "#"
+        }
+      ],
+      "id": "across-the-waters"
+    },
+    {
+      "bg": "",
+      "meta": "2023 · Short Film / Photo Series · Director",
+      "blocks": [
+        {
+          "title": "Shown at",
+          "text": "Local Indie Film Night, 2023\nOnline photo feature — Magazine Y"
+        }
+      ],
+      "overlay": "rgba(120,50,95,0.5)",
+      "titleAlt": "东山飘雨西山晴",
+      "synopsis": "A personal documentary-photo hybrid about home, distance and the things you carry. Shot over a year.",
+      "label": "Two Mountains Weighing Down My Chest",
+      "title": "Two Mountains Weighing Down My Chest",
+      "links": [
+        {
+          "label": "Watch →",
+          "url": "#"
+        }
+      ],
+      "id": "two-mountains"
+    },
+    {
+      "bg": "",
+      "meta": "2023 · Brand System · Designer",
+      "blocks": [
+        {
+          "title": "Scope",
+          "text": "Logo, palette, type scale\nPackaging + web one-pager"
+        }
+      ],
+      "overlay": "rgba(180,120,50,0.45)",
+      "titleAlt": "日晕",
+      "synopsis": "Identity, type system and packaging for a small-batch coffee roaster. Warm, hand-built, a little hazy.",
+      "label": "Sun Haze",
+      "title": "Sun Haze",
+      "links": [
+        {
+          "label": "Case study →",
+          "url": "#"
+        }
+      ],
+      "id": "sun-haze"
+    },
+    {
+      "bg": "",
+      "meta": "ongoing · Experiments · Me, alone at 2am",
+      "blocks": [
+        {
+          "title": "Contains",
+          "text": "Shader doodles\nA synth that barely works\nA typeface, 40% done"
+        }
+      ],
+      "overlay": "rgba(60,60,72,0.5)",
+      "titleAlt": "未命名",
+      "synopsis": "The graveyard / playground. Creative-coding sketches, generative art, half-ideas that aren't ready but are honest.",
+      "label": "untitled",
+      "title": "untitled",
+      "links": [],
+      "id": "untitled"
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+# ============================================================
+#  Decap CMS config — defines the editing forms at /admin
+#  Docs: https://decapcms.org/docs/
+# ============================================================
+
+backend:
+  name: git-gateway
+  branch: main          # change to "master" if your repo's default branch is master
+
+# Lets you test the CMS locally with `npx decap-server` (see README)
+local_backend: true
+
+media_folder: "assets/uploads"   # where uploaded images are stored
+public_folder: "/assets/uploads" # how the site references them
+
+# Friendlier labels
+site_url: /
+display_url: /
+logo_url: ""
+
+collections:
+  - name: "site"
+    label: "Website"
+    delete: false
+    files:
+      # ---------------- DESKTOP CONTENT (single file: content.json) ----------------
+      - name: "content"
+        label: "Desktop Content"
+        file: "content.json"
+        description: "Everything on the desktop. Add projects (folders), photos, edit the Read Me, profile and CV."
+        editor:
+          preview: false
+        fields:
+          # ---- Profile / contact ----
+          - label: "Profile & Contact"
+            name: "profile"
+            widget: "object"
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Instagram URL", name: "instagram", widget: "string", required: false }
+              - { label: "Email", name: "email", widget: "string", required: false }
+              - { label: "Profile picture", name: "profilePic", widget: "image", required: false, hint: "Leave empty to use a placeholder." }
+
+          # ---- Read Me letter ----
+          - label: "Read Me (letter)"
+            name: "readme"
+            widget: "object"
+            fields:
+              - { label: "Window title", name: "title", widget: "string", default: "Read Me" }
+              - label: "Paragraphs"
+                name: "paragraphs"
+                widget: "list"
+                label_singular: "Paragraph"
+                summary: "{{fields.text}}"
+                fields:
+                  - { label: "Text", name: "text", widget: "text" }
+                  - label: "Style"
+                    name: "style"
+                    widget: "select"
+                    default: "normal"
+                    options:
+                      - { label: "Normal", value: "normal" }
+                      - { label: "Big / intro", value: "lead" }
+                      - { label: "Small (list line)", value: "small" }
+
+          # ---- Photos collage ----
+          - label: "Photos (collage)"
+            name: "photos"
+            widget: "list"
+            label_singular: "Photo"
+            summary: "Photo"
+            hint: "These get scattered automatically. Just upload images."
+            fields:
+              - { label: "Image", name: "image", widget: "image", required: false }
+
+          # ---- CV ----
+          - label: "CV"
+            name: "cv"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "File name (no .pdf)", name: "fileLabel", widget: "string", default: "CV_2026" }
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Role / tagline", name: "role", widget: "string", required: false }
+              - label: "Sections"
+                name: "sections"
+                widget: "list"
+                label_singular: "Section"
+                summary: "{{fields.title}}"
+                fields:
+                  - { label: "Section title", name: "title", widget: "string" }
+                  - label: "Entries (jobs / studies)"
+                    name: "rows"
+                    widget: "list"
+                    required: false
+                    label_singular: "Entry"
+                    summary: "{{fields.what}}"
+                    fields:
+                      - { label: "When", name: "when", widget: "string", required: false }
+                      - { label: "What (title)", name: "what", widget: "string" }
+                      - { label: "Detail", name: "sub", widget: "string", required: false }
+                  - label: "Tags / skills"
+                    name: "tags"
+                    widget: "list"
+                    required: false
+                    hint: "Use this instead of Entries for a skills section."
+
+          # ---- PROJECTS = folders on the desktop ----
+          - label: "Projects (desktop folders)"
+            name: "projects"
+            widget: "list"
+            label_singular: "Project"
+            summary: "{{fields.label}}"
+            hint: "Each project is a folder on the desktop. Click 'Add Project' to add one."
+            fields:
+              - { label: "Folder name (shown on desktop)", name: "label", widget: "string" }
+              - { label: "Title (big heading)", name: "title", widget: "string" }
+              - { label: "Subtitle / other language", name: "titleAlt", widget: "string", required: false }
+              - { label: "Meta line", name: "meta", widget: "string", required: false, hint: "e.g. 2024 · Web App · Lead Developer" }
+              - { label: "Synopsis", name: "synopsis", widget: "text", required: false }
+              - { label: "Background image", name: "bg", widget: "image", required: false, hint: "Used as the background, or as the video's poster. Leave empty for a colored placeholder." }
+              - { label: "Background video", name: "bgVideo", widget: "file", required: false, hint: "Optional .mp4 — plays muted on loop behind the text, overriding the image. Keep it small." }
+              - { label: "Overlay color", name: "overlay", widget: "string", required: false, default: "rgba(40,40,55,0.5)", hint: "rgba(R,G,B,alpha) — tint over the background." }
+              - label: "Detail blocks"
+                name: "blocks"
+                widget: "list"
+                required: false
+                label_singular: "Block"
+                summary: "{{fields.title}}"
+                fields:
+                  - { label: "Block title", name: "title", widget: "string" }
+                  - { label: "Lines (one per line)", name: "text", widget: "text" }
+              - label: "Links / buttons"
+                name: "links"
+                widget: "list"
+                required: false
+                label_singular: "Link"
+                summary: "{{fields.label}}"
+                fields:
+                  - { label: "Button text", name: "label", widget: "string" }
+                  - { label: "URL", name: "url", widget: "string" }
