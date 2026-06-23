@@ -40,18 +40,6 @@
   <!-- ===== Hint (auto-hides) ===== -->
   <div id="hint" class="hint">double-click an icon — drag windows around</div>
 
-  <script src="script.js?v=3"></script>
-
-  <!-- Netlify Identity: enables the /admin login redirect after sign-in -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on('init', function (user) {
-        if (!user) {
-          window.netlifyIdentity.on('login', function () { document.location.href = '/admin/'; });
-        }
-      });
-    }
-  </script>
+  <script src="script.js?v=4"></script>
 </body>
 </html>

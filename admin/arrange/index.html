@@ -92,12 +92,11 @@
   <!-- Login gate (only used on the deployed site) -->
   <div class="gate" id="gate">
     <h2>Layout Editor</h2>
-    <p>Please log in with your editor account to arrange and save the desktop layout.</p>
-    <button id="gate-login">Log in</button>
+    <p>You need to sign in through the CMS first. Click below, log in with GitHub, then come back here.</p>
+    <button id="gate-login">Open CMS login</button>
   </div>
 
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=4"></script>
   <script>
   /* ============================================================
      Layout Editor controller
@@ -105,6 +104,7 @@
   (function () {
     const isLocal = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
     const BRANCH = 'main';                 // must match admin/config.yml
+    const REPO = 'oktavianusw/Bram-porto'; // must match admin/config.yml
     const statusEl = document.getElementById('ed-status');
 
     function setStatus(msg, kind) {
@@ -156,19 +156,19 @@
           });
           if (!res.ok) throw new Error('local server ' + res.status + ' — is `npx decap-server` running?');
         } else {
-          const user = window.netlifyIdentity && netlifyIdentity.currentUser();
-          if (!user) { showGate(); throw new Error('Please log in first.'); }
-          const token = await user.jwt();
-          const api = '/.netlify/git/github/contents/layout.json';
+          const token = getCmsToken();
+          if (!token) { showGate(); throw new Error('Log in via the CMS first.'); }
+          const api = 'https://api.github.com/repos/' + REPO + '/contents/layout.json';
+          const gh = { Authorization: 'token ' + token, Accept: 'application/vnd.github+json' };
           let sha;
-          const cur = await fetch(api + '?ref=' + BRANCH, { headers: { Authorization: 'Bearer ' + token } });
+          const cur = await fetch(api + '?ref=' + BRANCH, { headers: gh });
           if (cur.ok) sha = (await cur.json()).sha;
           const put = await fetch(api, {
             method: 'PUT',
-            headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+            headers: Object.assign({ 'Content-Type': 'application/json' }, gh),
             body: JSON.stringify({ message: 'Update desktop layout', content: b64(raw), branch: BRANCH, sha }),
           });
-          if (!put.ok) throw new Error('git-gateway ' + put.status + ' ' + (await put.text()).slice(0, 120));
+          if (!put.ok) throw new Error('GitHub ' + put.status + ' ' + (await put.text()).slice(0, 140));
         }
         DATA.layout = layout;   // keep in memory so Reset = this
         setStatus('Saved ✓ visitors now see this', 'ok');
@@ -194,17 +194,22 @@
       setStatus('Reverted to last saved');
     });
 
-    /* ---- login gate (deployed site only) ---- */
-    function showGate() { document.getElementById('gate').classList.add('show'); }
-    function hideGate() { document.getElementById('gate').classList.remove('show'); }
-    document.getElementById('gate-login').addEventListener('click', () => window.netlifyIdentity && netlifyIdentity.open());
-
-    if (!isLocal && window.netlifyIdentity) {
-      netlifyIdentity.on('init', user => { if (!user) showGate(); });
-      netlifyIdentity.on('login', () => { hideGate(); netlifyIdentity.close(); });
-      netlifyIdentity.on('logout', showGate);
-      netlifyIdentity.init();
+    /* ---- auth: reuse the GitHub token Decap stored after CMS login ---- */
+    function getCmsToken() {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        try {
+          const v = JSON.parse(localStorage.getItem(k));
+          if (v && v.token && (v.backendName || v.backend)) return v.token;
+        } catch (e) { /* not json */ }
+      }
+      return null;
     }
+    function showGate() { document.getElementById('gate').classList.add('show'); }
+    document.getElementById('gate-login').addEventListener('click', () => { window.location.href = '/admin/'; });
+
+    // On the deployed site you must sign in through the CMS first (that stores the token).
+    if (!isLocal && !getCmsToken()) showGate();
 
     setStatus(isLocal ? 'Local mode — saves to layout.json' : '');
   })();

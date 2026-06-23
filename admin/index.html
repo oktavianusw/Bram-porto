@@ -7,9 +7,7 @@
   <title>Bram — Content Manager</title>
 </head>
 <body>
-  <!-- Netlify Identity (login) -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <!-- Decap CMS -->
+  <!-- Decap CMS (auth handled by GitHub OAuth via /.netlify/functions/*) -->
   <script src="https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js"></script>
   <script>
     // This Decap build has no registerAdditionalLink API, so we add an

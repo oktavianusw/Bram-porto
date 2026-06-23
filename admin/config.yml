@@ -4,10 +4,13 @@
 # ============================================================
 
 backend:
-  name: git-gateway
-  branch: main          # change to "master" if your repo's default branch is master
+  name: github
+  repo: oktavianusw/Bram-porto      # owner/repo
+  branch: main
+  base_url: https://bam-porto.netlify.app          # the site that hosts the OAuth functions
+  auth_endpoint: .netlify/functions/auth           # our serverless OAuth starter
 
-# Lets you test the CMS locally with `npx decap-server` (see README)
+# Local editing still works with `npx decap-server` (no OAuth needed locally)
 local_backend: true
 
 media_folder: "assets/uploads"   # where uploaded images are stored
