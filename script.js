@@ -565,6 +565,9 @@ tick(); setInterval(tick, 1000);
    ============================================================ */
 async function init() {
   await loadContent();
+  // Desktop wallpaper from the CMS (falls back to the CSS gradient if empty).
+  const wp = DATA.appearance && DATA.appearance.wallpaper;
+  if (wp) document.documentElement.style.setProperty('--wallpaper', `url('${wp}')`);
   if (menuName) menuName.textContent = DATA.profile.name || '';
   document.getElementById('link-instagram').href = DATA.profile.instagram || '#';
   document.getElementById('link-email').href = 'mailto:' + (DATA.profile.email || '');

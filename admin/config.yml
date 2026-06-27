@@ -84,6 +84,12 @@ collections:
         label: "Site & profile"
         file: "content/site.json"
         fields:
+          - label: "🎨  Desktop wallpaper"
+            name: "appearance"
+            widget: "object"
+            fields:
+              - { label: "Background image", name: "wallpaper", widget: "image", required: false, hint: "The desktop background photo. Leave empty to use the default gradient." }
+
           - label: "👤  Profile & contact"
             name: "profile"
             widget: "object"

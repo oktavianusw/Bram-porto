@@ -34,6 +34,7 @@ if (fs.existsSync(projectsDir)) {
 }
 
 const out = {
+  appearance: site.appearance || {},
   profile: site.profile,
   readme: site.readme,
   photos: site.photos,
