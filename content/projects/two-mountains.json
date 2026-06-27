@@ -1,0 +1,23 @@
+{
+  "order": 20,
+  "label": "Two Mountains Weighing Down My Chest",
+  "title": "Two Mountains Weighing Down My Chest",
+  "titleAlt": "东山飘雨西山晴",
+  "meta": "2023 · Short Film / Photo Series · Director",
+  "synopsis": "A personal documentary-photo hybrid about home, distance and the things you carry. Shot over a year.",
+  "bg": "",
+  "bgVideo": "",
+  "overlay": "rgba(120,50,95,0.5)",
+  "blocks": [
+    {
+      "title": "Shown at",
+      "text": "Local Indie Film Night, 2023\nOnline photo feature — Magazine Y"
+    }
+  ],
+  "links": [
+    {
+      "label": "Watch →",
+      "url": "#"
+    }
+  ]
+}

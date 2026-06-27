@@ -10,8 +10,67 @@
   <!-- Decap CMS (auth handled by GitHub OAuth via /.netlify/functions/*) -->
   <script src="https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js"></script>
   <script>
-    // This Decap build has no registerAdditionalLink API, so we add an
-    // "Arrange layout" link into the sidebar and keep it there across re-renders.
+    /* ---------- Live preview pane for Projects (Webflow-style) ---------- */
+    (function () {
+      try {
+        var h = window.h;
+        if (!h || !window.CMS || !CMS.registerPreviewTemplate) return;
+
+        function asset(props, p) {
+          try { return p ? props.getAsset(p).toString() : ''; } catch (e) { return ''; }
+        }
+
+        function ProjectPreview(props) {
+          var data = props.entry.getIn(['data']);
+          var d = (data && data.toJS) ? data.toJS() : {};
+          var bgUrl = asset(props, d.bg);
+          var videoUrl = asset(props, d.bgVideo);
+          var overlay = d.overlay || 'rgba(40,40,55,0.5)';
+
+          var bodyStyle = { height: '100%' };
+          if (!videoUrl) {
+            bodyStyle.backgroundImage = bgUrl
+              ? "url('" + bgUrl + "')"
+              : 'linear-gradient(135deg,#3a3a44,#101014)';
+          }
+
+          var kids = [];
+          if (videoUrl) {
+            kids.push(h('video', { className: 'project-video', src: videoUrl, autoPlay: true, muted: true, loop: true, playsInline: true }));
+          }
+          kids.push(h('div', { className: 'project-overlay', style: { background: overlay } }));
+
+          var content = [
+            h('h1', {}, (d.title || '') + (d.titleAlt ? '  ' + d.titleAlt : '')),
+            h('div', { className: 'meta' }, d.meta || ''),
+            h('div', { className: 'synopsis' }, d.synopsis || ''),
+          ];
+          (d.blocks || []).forEach(function (b) {
+            var lines = String(b.text || '').split('\n').filter(Boolean).map(function (l) {
+              return h('div', { className: 'block-line' }, l);
+            });
+            content.push(h('div', { className: 'block' }, [h('div', { className: 'block-title' }, b.title || '')].concat(lines)));
+          });
+          if ((d.links || []).length) {
+            content.push(h('div', { className: 'links' }, (d.links || []).map(function (l) {
+              return h('a', { href: l.url || '#' }, l.label || '');
+            })));
+          }
+          kids.push(h('div', { className: 'project-content' }, content));
+
+          return h('div', { className: 'project-body', style: bodyStyle }, kids);
+        }
+
+        CMS.registerPreviewStyle('/styles.css');
+        CMS.registerPreviewStyle(
+          'html,body{height:auto;overflow:auto;margin:0;background:#111} .project-body{min-height:560px}',
+          { raw: true }
+        );
+        CMS.registerPreviewTemplate('projects', ProjectPreview);
+      } catch (e) { console.error('preview setup failed', e); }
+    })();
+
+    /* ---------- "Arrange layout" link in the CMS sidebar -> /admin/arrange/ ---------- */
     (function () {
       function inject() {
         if (document.getElementById('arrange-nav-link')) return;
@@ -24,7 +83,6 @@
         a.href = '/admin/arrange/';
         a.textContent = '🗂  Arrange layout';
         a.className = collLink.className;
-        // The CMS router swallows plain anchor clicks — force a real navigation.
         a.addEventListener('click', function (e) {
           e.preventDefault();
           e.stopPropagation();

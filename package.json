@@ -1,0 +1,10 @@
+{
+  "name": "bram-porto",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Desktop-style portfolio. `npm run build` compiles CMS source files into content.json.",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js && python3 -m http.server 4321"
+  }
+}

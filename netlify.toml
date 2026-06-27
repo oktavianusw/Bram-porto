@@ -1,7 +1,8 @@
-# Static site (no build) + serverless OAuth functions for the CMS.
+# Static site + a build step that compiles the CMS source files
+# (content/site.json + content/projects/*.json) into content.json.
 [build]
   publish = "."
-  command = ""
+  command = "node build.js"
 
 [functions]
   directory = "netlify/functions"

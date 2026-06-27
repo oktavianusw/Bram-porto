@@ -1,0 +1,23 @@
+{
+  "order": 30,
+  "label": "Sun Haze",
+  "title": "Sun Haze",
+  "titleAlt": "日晕",
+  "meta": "2023 · Brand System · Designer",
+  "synopsis": "Identity, type system and packaging for a small-batch coffee roaster. Warm, hand-built, a little hazy.",
+  "bg": "",
+  "bgVideo": "",
+  "overlay": "rgba(180,120,50,0.45)",
+  "blocks": [
+    {
+      "title": "Scope",
+      "text": "Logo, palette, type scale\nPackaging + web one-pager"
+    }
+  ],
+  "links": [
+    {
+      "label": "Case study →",
+      "url": "#"
+    }
+  ]
+}

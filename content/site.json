@@ -1,0 +1,99 @@
+{
+  "profile": {
+    "name": "Bramuda",
+    "instagram": "https://instagram.com/bramuda_",
+    "email": "inibramuda@gmail.com",
+    "profilePic": "/assets/uploads/photo-professional.png"
+  },
+  "readme": {
+    "title": "Readme",
+    "paragraphs": [
+      {
+        "style": "lead",
+        "text": "Hi — this is Bram. Thanks for poking around tetsagdasdjasd"
+      },
+      {
+        "style": "normal",
+        "text": "Normally I'd open with “multi-disciplinary maker, builds web things, shoots photos, designs the odd brand.” True, but a little dull."
+      },
+      {
+        "style": "normal",
+        "text": "So instead, the honest version: I work across code, design and image because I get bored doing only one. Some of it ships, some of it lives forever in an “untitled” folder."
+      },
+      {
+        "style": "small",
+        "text": "I taught myself to code before I learned to finish things."
+      },
+      {
+        "style": "small",
+        "text": "Double-click the folders. The CV is the boring summary; the projects are the real me."
+      }
+    ]
+  },
+  "photos": [
+    {
+      "image": "/assets/uploads/indomie-goreng.jpg"
+    },
+    {
+      "image": "/assets/uploads/screenshot-2026-05-21-at-18.35.54.png"
+    },
+    {
+      "image": ""
+    },
+    {
+      "image": ""
+    },
+    {
+      "image": ""
+    },
+    {
+      "image": ""
+    }
+  ],
+  "cv": {
+    "fileLabel": "CV_Bram_2026",
+    "name": "Bram",
+    "role": "Developer · Designer · Image-maker",
+    "sections": [
+      {
+        "title": "Work",
+        "rows": [
+          {
+            "when": "2024 — now",
+            "what": "Freelance",
+            "sub": "Web apps, brand systems, creative tech for studios & founders."
+          },
+          {
+            "when": "2022 — 2024",
+            "what": "Frontend Developer, Studio X",
+            "sub": "Shipped product UI, design systems, interactive sites."
+          }
+        ]
+      },
+      {
+        "title": "Education",
+        "rows": [
+          {
+            "when": "2018 — 2022",
+            "what": "B.Sc. Informatics",
+            "sub": "Plus a lot of self-taught design on the side."
+          }
+        ]
+      },
+      {
+        "title": "Toolbox",
+        "tags": [
+          "JavaScript",
+          "TypeScript",
+          "React",
+          "Node",
+          "Figma",
+          "Photoshop",
+          "Premiere",
+          "WebGL",
+          "Python"
+        ]
+      }
+    ]
+  }
+}

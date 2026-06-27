@@ -1,0 +1,31 @@
+{
+  "order": 10,
+  "label": "Across the Waters",
+  "title": "Across the Waters",
+  "titleAlt": "渡水而来",
+  "meta": "2024 · Web Experience · Lead Developer",
+  "synopsis": "An interactive web piece tracing a migration story through scroll-driven WebGL. Built solo, end to end.",
+  "bg": "",
+  "bgVideo": "/assets/uploads/sample.mp4",
+  "overlay": "rgba(35,80,120,0.55)",
+  "blocks": [
+    {
+      "title": "Stack",
+      "text": "React, Three.js, GLSL shaders\nGSAP scroll choreography"
+    },
+    {
+      "title": "Recognition",
+      "text": "Awwwards — Honorable Mention, 2024\nCSS Design Awards — Site of the Day"
+    }
+  ],
+  "links": [
+    {
+      "label": "Live →",
+      "url": "#"
+    },
+    {
+      "label": "Code →",
+      "url": "#"
+    }
+  ]
+}

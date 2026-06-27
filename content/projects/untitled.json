@@ -1,0 +1,18 @@
+{
+  "order": 40,
+  "label": "untitled",
+  "title": "untitled",
+  "titleAlt": "未命名",
+  "meta": "ongoing · Experiments · Me, alone at 2am",
+  "synopsis": "The graveyard / playground. Creative-coding sketches, generative art, half-ideas that aren't ready but are honest.",
+  "bg": "",
+  "bgVideo": "",
+  "overlay": "rgba(60,60,72,0.5)",
+  "blocks": [
+    {
+      "title": "Contains",
+      "text": "Shader doodles\nA synth that barely works\nA typeface, 40% done"
+    }
+  ],
+  "links": []
+}
