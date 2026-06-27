@@ -137,7 +137,8 @@ collections:
             collapsed: true
             fields:
               - { label: "File name (no .pdf)", name: "fileLabel", widget: "string", default: "CV_2026" }
-              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Upload a PDF (optional)", name: "pdf", widget: "file", required: false, hint: "Upload your CV as a PDF and it’s shown directly in the window. Leave empty to use the typed fields below instead." }
+              - { label: "Name", name: "name", widget: "string", required: false }
               - { label: "Role / tagline", name: "role", widget: "string", required: false }
               - label: "Sections"
                 name: "sections"

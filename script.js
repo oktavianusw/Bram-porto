@@ -494,7 +494,15 @@ function makePhotoDraggable(el) {
 
 function openCV() {
   const c = DATA.cv;
-  const sections = c.sections.map(s => {
+  // If a PDF was uploaded, show it directly in the window.
+  if (c.pdf) {
+    const body = `
+      <div class="pdf-bar"><a href="${c.pdf}" target="_blank" rel="noopener">Open / download ↗</a></div>
+      <iframe class="pdf-frame" src="${c.pdf}" title="${c.fileLabel || 'CV'}"></iframe>`;
+    createWindow({ id: 'cv', title: (c.fileLabel || 'CV') + '.pdf', appName: 'Preview', w: 720, h: 680, bodyClass: 'pdf-viewer', bodyHtml: body });
+    return;
+  }
+  const sections = (c.sections || []).map(s => {
     if (s.tags && s.tags.length) return `<h2>${s.title}</h2><div class="tags">${s.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>`;
     const rows = s.rows || [];
     return `<h2>${s.title}</h2>${rows.map(r => `
