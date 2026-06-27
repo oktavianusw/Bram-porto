@@ -19,3 +19,11 @@
   for = "/layout.json"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# Uploaded images/videos (wallpaper, project backgrounds, photos, profile pic):
+# revalidate every load so re-uploaded files show up on a normal refresh —
+# no hard-refresh needed, even for whoever is editing.
+[[headers]]
+  for = "/assets/uploads/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
