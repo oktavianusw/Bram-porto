@@ -1,12 +1,12 @@
 {
   "profile": {
-    "name": "Bram",
-    "instagram": "https://instagram.com/your_handle",
-    "email": "bram@example.com",
+    "name": "Bramuda",
+    "instagram": "https://instagram.com/bramuda_",
+    "email": "inibramuda@gmail.com",
     "profilePic": ""
   },
   "readme": {
-    "title": "Read Me",
+    "title": "Readme",
     "paragraphs": [
       {
         "style": "lead",
@@ -99,7 +99,6 @@
   "projects": [
     {
       "bg": "",
-      "bgVideo": "/assets/uploads/sample.mp4",
       "meta": "2024 · Web Experience · Lead Developer",
       "blocks": [
         {
@@ -115,6 +114,7 @@
       "titleAlt": "渡水而来",
       "synopsis": "An interactive web piece tracing a migration story through scroll-driven WebGL. Built solo, end to end.",
       "label": "Across the Waters",
+      "bgVideo": "/assets/uploads/sample.mp4",
       "title": "Across the Waters",
       "links": [
         {
