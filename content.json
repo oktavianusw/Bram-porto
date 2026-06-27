@@ -3,7 +3,7 @@
     "name": "Bramuda",
     "instagram": "https://instagram.com/bramuda_",
     "email": "inibramuda@gmail.com",
-    "profilePic": ""
+    "profilePic": "/assets/uploads/photo-professional.png"
   },
   "readme": {
     "title": "Readme",
@@ -98,7 +98,7 @@
   },
   "projects": [
     {
-      "bg": "/assets/uploads/ivan0308.png",
+      "bg": "",
       "meta": "2024 · Web Experience · Lead Developer",
       "blocks": [
         {
