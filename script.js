@@ -456,26 +456,33 @@ function openReadme() {
 }
 
 function openPhotos() {
-  const win = createWindow({ id: 'photos', title: 'Photos (Private)', appName: 'Photos', w: 760, h: 560, bodyHtml: `<div class="collage"></div>` });
-  const box = win.querySelector('.collage');
-  // measure available area, then scatter the photos like a real pile
-  const cw = box.clientWidth || 740, ch = box.clientHeight || 500;
-  const rnd = (a, b) => a + Math.random() * (b - a);
-  DATA.photos.forEach((p, i) => {
-    const src = pic(p.image || p.img, String(i + 1).padStart(2, '0'),
-      ['#c98a5e', '#5e7fc9', '#5ec98a', '#c95e9e', '#c9b85e', '#8a5ec9'][i % 6],
-      ['#5e3a2a', '#2a345e', '#2a5e3a', '#5e2a4a', '#5e552a', '#3a2a5e'][i % 6]);
-    const w = p.w || Math.round(rnd(210, 300));
-    const h = p.h || Math.round(rnd(210, 320));
-    const x = p.x != null ? p.x : Math.round(rnd(10, Math.max(12, cw - w - 10)));
-    const y = p.y != null ? p.y : Math.round(rnd(10, Math.max(12, ch - h - 10)));
-    const r = p.r != null ? p.r : rnd(-8, 8).toFixed(1);
-    const el = document.createElement('div');
-    el.className = 'collage-photo';
-    el.style.cssText = `left:${x}px; top:${y}px; width:${w}px; height:${h}px; transform:rotate(${r}deg); z-index:${i + 1};`;
-    el.innerHTML = `<img src="${src}" alt="">`;
-    box.appendChild(el);
-    makePhotoDraggable(el);
+  // macOS Finder "Gallery" view: big preview + bottom filmstrip of thumbnails.
+  const srcs = DATA.photos.map((p, i) => pic(p.image || p.img, String(i + 1).padStart(2, '0'),
+    ['#c98a5e', '#5e7fc9', '#5ec98a', '#c95e9e', '#c9b85e', '#8a5ec9'][i % 6],
+    ['#5e3a2a', '#2a345e', '#2a5e3a', '#5e2a4a', '#5e552a', '#3a2a5e'][i % 6]));
+
+  const thumbs = srcs.map((s, i) =>
+    `<button class="gallery-thumb${i === 0 ? ' active' : ''}" data-i="${i}"><img src="${s}" alt=""></button>`).join('');
+  const html = `<div class="gallery">
+      <div class="gallery-stage"><img class="gallery-main" src="${srcs[0] || ''}" alt=""></div>
+      <div class="gallery-strip">${thumbs}</div>
+    </div>`;
+
+  const win = createWindow({ id: 'photos', title: 'Photos (Private)', appName: 'Finder', w: 840, h: 600, bodyClass: 'gallery-body', bodyHtml: html });
+
+  const main = win.querySelector('.gallery-main');
+  const tEls = [...win.querySelectorAll('.gallery-thumb')];
+  const select = (i) => {
+    if (!srcs[i]) return;
+    main.src = srcs[i];
+    tEls.forEach((t) => t.classList.toggle('active', +t.dataset.i === i));
+    tEls[i].scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+  };
+  tEls.forEach((t) => t.addEventListener('click', () => select(+t.dataset.i)));
+  // click the big image to advance to the next one
+  main.addEventListener('click', () => {
+    const cur = tEls.findIndex((t) => t.classList.contains('active'));
+    select((cur + 1) % srcs.length);
   });
 }
 

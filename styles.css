@@ -185,11 +185,33 @@ html, body {
 .textedit-page p.lead { font-weight: 600; }
 .textedit-page .small { font-size: 16px; line-height: 1.55; margin-bottom: 6px; }
 
-/* ---- Photo collage ---- */
-.collage { background: #0d0d0f; height: 100%; position: relative; min-height: 380px; }
-.collage-photo { position: absolute; box-shadow: 0 10px 30px rgba(0,0,0,0.6); cursor: grab; border: 4px solid #fff; }
-.collage-photo.dragging { cursor: grabbing; z-index: 50 !important; }
-.collage-photo img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+/* ---- Photos: macOS Finder "Gallery" view ---- */
+.gallery-body { background: #2c2c2e; }
+.gallery { display: flex; flex-direction: column; height: 100%; }
+.gallery-stage {
+  flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center;
+  padding: 26px;
+}
+.gallery-main {
+  max-width: 100%; max-height: 100%; object-fit: contain;
+  border-radius: 6px; background: #000;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.55);
+}
+.gallery-strip {
+  flex: none; height: 104px; display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; overflow-x: auto; overflow-y: hidden;
+  background: rgba(0,0,0,0.28); border-top: 1px solid rgba(255,255,255,0.07);
+}
+.gallery-strip::-webkit-scrollbar { height: 7px; }
+.gallery-strip::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.22); border-radius: 4px; }
+.gallery-thumb {
+  flex: none; width: 64px; height: 78px; padding: 0; cursor: pointer;
+  background: transparent; border: 2px solid transparent; border-radius: 5px;
+  opacity: 0.65; transition: opacity 0.12s; overflow: hidden;
+}
+.gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 3px; }
+.gallery-thumb:hover { opacity: 1; }
+.gallery-thumb.active { opacity: 1; border-color: #3b82f6; box-shadow: 0 0 0 1px #3b82f6; }
 
 /* ---- PDF viewer (CV uploaded as PDF) ---- */
 .pdf-viewer { display: flex; flex-direction: column; height: 100%; background: #525659; }
