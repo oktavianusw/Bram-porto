@@ -9,16 +9,16 @@ backend:
   name: github
   repo: oktavianusw/Bram-porto
   branch: main
-  base_url: https://bam-porto.netlify.app
-  auth_endpoint: .netlify/functions/auth
+  base_url: https://bram-porto.vercel.app
+  auth_endpoint: api/auth
 
 local_backend: true
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
-site_url: https://bam-porto.netlify.app
-display_url: https://bam-porto.netlify.app
+site_url: https://bram-porto.vercel.app
+display_url: https://bram-porto.vercel.app
 
 collections:
   # ============================================================

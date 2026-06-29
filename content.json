@@ -1,44 +1,52 @@
 {
   "appearance": {
-    "wallpaper": ""
+    "wallpaper": "/assets/uploads/img_7666.jpg"
   },
   "profile": {
     "name": "Bramuda",
     "instagram": "https://instagram.com/bramuda_",
     "email": "inibramuda@gmail.com",
-    "profilePic": "/assets/uploads/photo-professional.png"
+    "profilePic": "/assets/uploads/img_7325.png"
   },
   "readme": {
-    "title": "Readme",
+    "title": "Read Me",
     "paragraphs": [
       {
         "style": "lead",
-        "text": "Hi — this is Bram. Thanks for poking around tetsagdasdjasd"
+        "text": "Hi there :) This is Bam. Thanks for stopping by."
       },
       {
         "style": "normal",
-        "text": "Normally I'd open with “multi-disciplinary maker, builds web things, shoots photos, designs the odd brand.” True, but a little dull."
+        "text": "Usually I would introduce myself like: Hi, I’m Bramuda, I’m a former journalist turned SEO content writer who happens to write and direct films."
       },
       {
         "style": "normal",
-        "text": "So instead, the honest version: I work across code, design and image because I get bored doing only one. Some of it ships, some of it lives forever in an “untitled” folder."
+        "text": "But every time I do that I feel like an automated answering machine. So unnecessarily firm and repetitive. So instead, i make this website to help introduce myself :D"
       },
       {
-        "style": "small",
-        "text": "I taught myself to code before I learned to finish things."
+        "style": "normal",
+        "text": "As much as I love seeing my close ones making it in life, I believe failures and hard times are the ones making us truly whole. And here’s my favorite all time failure."
       },
       {
-        "style": "small",
-        "text": "Double-click the folders. The CV is the boring summary; the projects are the real me."
+        "style": "normal",
+        "text": "Up until the age of 15, I lived a classic future basketball athlete life trope. But I got badly injured in high school so there goes that dream :/"
+      },
+      {
+        "style": "normal",
+        "text": "Who would’ve thought that the times I spent recovering rotting in bed led me to a new found love in film and poetry."
+      },
+      {
+        "style": "normal",
+        "text": "And now, I’ve made 5 short films that took me further than I’ve ever been. Hopefully, maybe someday, it can take me too🤞"
       }
     ]
   },
   "photos": [
     {
-      "image": "/assets/uploads/indomie-goreng.jpg"
+      "image": ""
     },
     {
-      "image": "/assets/uploads/screenshot-2026-05-21-at-18.35.54.png"
+      "image": ""
     },
     {
       "image": ""
@@ -101,15 +109,8 @@
   },
   "projects": [
     {
-      "order": 10,
-      "label": "Across the Waters",
-      "title": "Across the Waters",
-      "titleAlt": "渡水而来",
-      "meta": "2024 · Web Experience · Lead Developer",
-      "synopsis": "An interactive web piece tracing a migration story through scroll-driven WebGL. Built solo, end to end.",
       "bg": "",
-      "bgVideo": "/assets/uploads/sample.mp4",
-      "overlay": "rgba(35,80,120,0.55)",
+      "meta": "2024 · Web Experience · Lead Developer",
       "blocks": [
         {
           "title": "Stack",
@@ -120,6 +121,13 @@
           "text": "Awwwards — Honorable Mention, 2024\nCSS Design Awards — Site of the Day"
         }
       ],
+      "order": 10,
+      "overlay": "rgba(35,80,120,0.55)",
+      "titleAlt": "UHUY",
+      "synopsis": "An interactive web piece tracing a migration story through scroll-driven WebGL. Built solo, end to end.",
+      "label": "INI FILM",
+      "bgVideo": "/assets/uploads/sample.mp4",
+      "title": "FILM GUWAH",
       "links": [
         {
           "label": "Live →",

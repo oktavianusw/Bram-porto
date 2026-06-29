@@ -1,27 +1,31 @@
-/* Decap CMS GitHub OAuth — step 2: exchange the code for a token (server-side,
-   using the secret) and hand it back to the CMS popup via postMessage.
-   The client SECRET only ever lives here (Netlify env var), never in the browser. */
-exports.handler = async (event) => {
+/* Decap CMS GitHub OAuth (Vercel) — step 2: exchange the code for a token
+   (server-side, using the secret) and hand it back to the CMS popup.
+   The client SECRET only lives here (Vercel env var), never in the browser. */
+module.exports = async (req, res) => {
   const clientId = process.env.OAUTH_GITHUB_CLIENT_ID;
   const clientSecret = process.env.OAUTH_GITHUB_CLIENT_SECRET;
-  const code = (event.queryStringParameters || {}).code;
+  const code = req.query && req.query.code;
 
   if (!clientId || !clientSecret) {
-    return { statusCode: 500, body: 'Missing OAuth env vars on Netlify.' };
+    res.statusCode = 500;
+    res.end('Missing OAuth env vars on Vercel.');
+    return;
   }
   if (!code) {
-    return { statusCode: 400, body: 'Missing ?code from GitHub.' };
+    res.statusCode = 400;
+    res.end('Missing ?code from GitHub.');
+    return;
   }
 
   let status = 'error';
   let content = { error: 'unknown' };
   try {
-    const res = await fetch('https://github.com/login/oauth/access_token', {
+    const r = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({ client_id: clientId, client_secret: clientSecret, code }),
     });
-    const data = await res.json();
+    const data = await r.json();
     if (data.access_token) {
       status = 'success';
       content = { token: data.access_token, provider: 'github' };
@@ -32,7 +36,6 @@ exports.handler = async (event) => {
     content = { error: String(e && e.message ? e.message : e) };
   }
 
-  // Hand the result back to the CMS window that opened this popup.
   const body = `<!doctype html><html><head><meta charset="utf-8"></head><body>
 <script>
 (function () {
@@ -42,12 +45,13 @@ exports.handler = async (event) => {
     window.removeEventListener('message', receive, false);
   }
   window.addEventListener('message', receive, false);
-  // Tell the opener (the CMS) we're ready; it replies, then we send the result above.
   window.opener && window.opener.postMessage('authorizing:github', '*');
 })();
 </script>
 <p>Completing sign-in… you can close this window.</p>
 </body></html>`;
 
-  return { statusCode: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' }, body };
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.end(body);
 };
